@@ -3,11 +3,17 @@
 """
 
 
-class LRUCache:
+class LRUCache(object):
+
+    class ListNode(object):
+        def __init__(self, value):
+            self.val = value
+            self.next = None
+
     # @param capacity, an integer
     def __init__(self, capacity):
         self.cache_dict = dict()
-        self.cap_list = [None] * capacity
+        self.head = self.ListNode(capacity)
 
     # @return an integer
     def get(self, key):
@@ -18,15 +24,25 @@ class LRUCache:
             return self.cache_dict[key]
 
     def touch(self, key):
-        if key in self.cap_list:
-            if key != self.cap_list[-1]:
-                self.cap_list.remove(key)
-                self.cap_list.append(key)
-        elif self.cap_list[-1] is not None:
-            self.cache_dict.pop(self.cap_list[-1])
-            self.cap_list.remove(self.cap_list[0])
-            self.cap_list.append(key)
-
+        pi = self.head
+        for i in xrange(self.head.val):
+            if pi.next:
+                if pi.next.val == key:
+                    # pick out and add to head
+                    tmp = pi.next
+                    pi.next = tmp.next
+                    tmp.next = self.head
+                    self.head = tmp
+                    return
+                else:
+                    pi = pi.next
+            else:
+                break
+        # add to head
+        new_node = self.ListNode(key)
+        new_node.next = self.head
+        self.head.next = new_node
+        return
 
     # @param key, an integer
     # @param value, an integer
