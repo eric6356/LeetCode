@@ -1,35 +1,58 @@
 class LRUCache:
+    class LinkNode(object):
+        def __init__(self, key, value):
+            self.key = key
+            self.val = value
+            self.prev = None
+            self.next = None
+
     # @param capacity, an integer
     def __init__(self, capacity):
         self.cache_dict = dict()
         self.capacity = capacity
-        self.cap_list = list()
+        self.head = self.LinkNode(0, 0)
+        self.tail = self.LinkNode(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
 
     # @return an integer
     def get(self, key):
         if not key in self.cache_dict:
             return -1
         else:
-            self.touch(key)
-            return self.cache_dict[key]
+            self.cache_dict[key].prev.next = self.cache_dict[key].next
+            self.cache_dict[key].next.prev = self.cache_dict[key].prev
+            self.cache_dict[key].prev = self.tail.prev
+            self.cache_dict[key].next = self.tail
+            self.tail.prev.next = self.cache_dict[key]
+            self.tail.prev = self.cache_dict[key]
 
-    def touch(self, key):
-        l = len(self.cap_list)
-        if l > self.capacity:  # full
-            del self.cap_list[0]
-        # if key in self.cap_list:
-        l = len(self.cap_list)        
-        for i in xrange(l):
-            if self.cap_list[l-i-1] == key:
-                self.cap_list.remove(key)
-                break
-        self.cap_list.append(key)
-
+            return self.cache_dict[key].val
 
     # @param key, an integer
     # @param value, an integer
     # @return nothing
     def set(self, key, value):
-        self.touch(key)
-        self.cache_dict[key] = value
+        if key in self.cache_dict:
+            self.cache_dict[key].val = value
+            self.cache_dict[key].prev.next = self.cache_dict[key].next
+            self.cache_dict[key].next.prev = self.cache_dict[key].prev
+        elif len(self.cache_dict) == self.capacity:
+            self.cache_dict.pop(self.head.next.key)
+            self.head = self.head.next
+            self.head.next.prev = self.head
+            self.cache_dict[key] = self.LinkNode(key, value)
+        else:
+            self.cache_dict[key] = self.LinkNode(key, value)
+        self.cache_dict[key].prev = self.tail.prev
+        self.cache_dict[key].next = self.tail
+        self.tail.prev.next = self.cache_dict[key]
+        self.tail.prev = self.cache_dict[key]
 
+lru = LRUCache(2)
+lru.set(2, 1)
+lru.set(1, 1)
+print lru.get(2)
+lru.set(4, 1)
+print lru.get(1)
+print lru.get(2)
