@@ -48,11 +48,3 @@ class LRUCache:
         self.cache_dict[key].next = self.tail
         self.tail.prev.next = self.cache_dict[key]
         self.tail.prev = self.cache_dict[key]
-
-lru = LRUCache(2)
-lru.set(2, 1)
-lru.set(1, 1)
-print lru.get(2)
-lru.set(4, 1)
-print lru.get(1)
-print lru.get(2)
