@@ -21,7 +21,3 @@ def wordbreak(s, dict):
         return True
     else:
         return False
-
-a = 'aaaaaaa'
-d = {'aaaa', 'aa'}
-print wordbreak(a, d)
