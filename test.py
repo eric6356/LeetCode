@@ -1,3 +1,3 @@
-a = 1
-if a == None:
-    print 'haha'
+a = {'a':2, 'b':2}
+for i in a:
+    print a[i]

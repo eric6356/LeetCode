@@ -8,25 +8,22 @@ b = ListNode(2)
 a.next = b
 b.next = a
 
-def hasCycle(head):
+def detectCycle(self, head):
     if head and head.next and head.next.next and head.next.next.next:
         slow = head.next
         fast = head.next.next
         while True:
-            if fast == slow or fast.next == slow:
+            if fast == slow:
                 fast = head
                 while True:
                     if fast == slow:
                         return slow
                     fast = fast.next
                     slow = slow.next
-            else:
-                fast = fast.next
-                if not fast.next or not fast.next.next:
+            elif not fast.next or not fast.next.next:
                     return None
-            fast = fast.next
+            fast = fast.next.next
             slow = slow.next
     else:
             return None
 
-hasCycle(a)
