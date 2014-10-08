@@ -32,14 +32,9 @@ def partition( s):
     stk = list()
     result = list()
     ok = list()
+    min = n
     print res
-    # for cut in ooxx(res, len(res)-1, stk, result):
-    #     tmp = list()
-    #     i_cut = 0
-    #     for i_cut in range(1, len(cut)):
-    #         tmp.append(s[cut[i_cut-1]:cut[i_cut]])
-    #     tmp.append(s[cut[i_cut]:])
-    #     ok.append(tmp)
+
     return ok
-s = 'abababababababababa'
+s = 'abcbabc'
 print len(partition(s))

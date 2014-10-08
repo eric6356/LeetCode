@@ -1,44 +1,44 @@
-   # return weather s is Palindrome
-def isPalindrome( s):
-    n = len(s)
-    return s[:n/2] == s[:(n-1)/2:-1]
-def ooxx(res, index, stk, result):
-    for i in res[index]:
-        if i:
-            stk.append(i)
-            ooxx(res, i-1, stk, result)
-            stk.pop()
-        else:
-            tmp = [0]
-            for j in stk[::-1]:
-                tmp.append(j)
-            result.append(tmp)
-    return result
-# @param s, a string
-# @return a list of lists of string
-def partition( s):
-    n = len(s)
-    if not n:
-        return list()
-    if n == 1:
-        return [s]
-    res = list()
-    for i in range(n):
-        res.append([i])
-    for i in range(n):
-        for j in range(i+1, n):
-            if isPalindrome(s[i:j+1]):
-                res[j].append(i)
-    stk = list()
-    result = list()
-    ok = list()
-    for cut in ooxx(res, len(res)-1, stk, result):
-        tmp = list()
-        i_cut = 0
-        for i_cut in range(1, len(cut)):
-            tmp.append(s[cut[i_cut-1]:cut[i_cut]])
-        tmp.append(s[cut[i_cut]:])
-        ok.append(tmp)
-    return ok
-s = 'ab'
-print partition(s)
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+
+def proc(node, stk, res):
+    if node.left:
+        stk.append(node.left.val)
+        res += proc(node.left, stk, res)
+        stk.pop()
+    elif node.right:
+        stk.append(node.right.val)
+        res += proc(node.right, stk, res)
+        stk.pop()
+    # if not node.left and not node.right:
+    else:
+        tmp = 0
+        print stk, node.val, res
+        for i in stk:
+            tmp *= 10
+            tmp += i
+        return tmp
+    return res
+# @param root, a tree node
+# @return an integer
+def sumNumbers(root):
+    if not root:
+        return 0
+    stk = [root.val]
+    res = 0
+    return proc(root, stk, res)
+
+
+root = TreeNode(1)
+l2 = TreeNode(2)
+l3 = TreeNode(3)
+l4 = TreeNode(4)
+
+root.left = l2
+root.right = l3
+l3.right = l4
+print sumNumbers(root)
