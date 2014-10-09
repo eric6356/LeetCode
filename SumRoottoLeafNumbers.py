@@ -7,28 +7,27 @@
 
 class Solution:
     def proc(self, node, stk, res):
+        stk.append(node.val)
+        tmp = 0
         if node.left:
-            stk.append(node.left.val)
-            res += self.proc(node.left, stk, res)
-            stk.pop()
-        elif node.right:
-            stk.append(node.right.val)
-            res += self.proc(node.left, stk, res)
-            stk.pop()
-        else:
-            tmp = 0
-            stk.append(node.val)
+            self.proc(node.left, stk, res)
+        if node.right:
+            self.proc(node.right, stk, res)
+        if not node.left and not node.right:
             for i in stk:
                 tmp *= 10
                 tmp += i
-            res += tmp
+            # print stk, node.val, res, tmp
             stk.pop()
-        return res
+            res[0] += tmp
+            return res[0]
+        stk.pop()
+        return res[0]
     # @param root, a tree node
     # @return an integer
     def sumNumbers(self, root):
         if not root:
             return 0
         stk = list()
-        res = 0
+        res = [0]
         return self.proc(root, stk, res)
