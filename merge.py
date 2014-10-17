@@ -5,7 +5,18 @@ class Solution:
     # @param n  an integer, length of B
     # @return nothing
     def merge(self, A, m, B, n):
-        res = A[:m]+B
-        res.sort()
-        for i in range(m+n):
-            A[i] = res[i]
+        i = m-1
+        j = n-1
+        k = m + n
+        while i >= 0 and j >= 0:
+            k -= 1
+            if A[i] > B[j]:
+                A[k] = A[i]
+                i -= 1
+            else:
+                A[k] = B[j]
+                j -= 1
+        while j >= 0:
+            k -= 1
+            A[k] = B[j]
+            j -= 1
