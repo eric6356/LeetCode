@@ -1,1 +1,6 @@
-a = 1
+s = 'aa'
+try:
+    float(s)
+    print True
+except:
+    print False
