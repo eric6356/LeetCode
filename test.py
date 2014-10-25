@@ -1,3 +1,3 @@
-for i in range(5):
-    print i
-print i
+a= [0] *5
+a[0] = 1
+print a
